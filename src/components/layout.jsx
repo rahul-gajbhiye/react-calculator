@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 const Layout = () => {
   const [display, setDisplay] = useState('');
@@ -41,28 +41,39 @@ const Layout = () => {
       <Row className="d-flex justify-content-center align-items-center vh-100">
         <Col xs={12} md={6} xl={4} onKeyDown={handleKeydown}>
           <div className="text-center border p-4">
-          <input type="text" value={display} readOnly className="display" />
-          <div className="buttons">
-            <button onClick={clearDisplay}>C</button>
-            <button onClick={backspace}>←</button>
-            <button onClick={() => appendToDisplay('/')}>/</button>
-            <button onClick={() => appendToDisplay('*')}>*</button>
-            <button onClick={() => appendToDisplay('7')}>7</button>
-            <button onClick={() => appendToDisplay('8')}>8</button>
-            <button onClick={() => appendToDisplay('9')}>9</button>
-            <button onClick={() => appendToDisplay('-')}>-</button>
-            <button onClick={() => appendToDisplay('4')}>4</button>
-            <button onClick={() => appendToDisplay('5')}>5</button>
-            <button onClick={() => appendToDisplay('6')}>6</button>
-            <button onClick={() => appendToDisplay('+')}>+</button>
-            <button onClick={() => appendToDisplay('1')}>1</button>
-            <button onClick={() => appendToDisplay('2')}>2</button>
-            <button onClick={() => appendToDisplay('3')}>3</button>
-            <button onClick={calculate} className="equal">=</button>
-            <button onClick={() => appendToDisplay('0')} className="zero">0</button>
-            <button onClick={() => appendToDisplay('.')}>.</button>
             
-          </div>
+            <div><input type="text" value={display} readOnly className="display w-100 " /></div>
+            <div>
+              <Row>
+                <Col xs={3} ><Button onClick={backspace}>←</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('+')}>+</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('-')}>-</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('/')}>/</Button></Col>      
+              
+                <Col xs={3} ><Button onClick={() => appendToDisplay('7')}>7</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('8')}>8</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('9')}>9</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('*')}>*</Button></Col>       
+              
+                <Col xs={3} ><Button onClick={() => appendToDisplay('4')}>4</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('5')}>5</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('6')}>6</Button></Col>
+                <Col xs={3} ><Button onClick={() => appendToDisplay('%')}>%</Button></Col>       
+                  
+                  <Col xs={9}>
+                    <Col xs={3} ><Button onClick={() => appendToDisplay('1')}>1</Button></Col>
+                    <Col xs={3} ><Button onClick={() => appendToDisplay('2')}>2</Button></Col>
+                    <Col xs={3} ><Button onClick={() => appendToDisplay('3')}>3</Button></Col>
+                    <Col xs={3}><Button onClick={() => appendToDisplay('.')}>.</Button></Col>
+                    <Col xs={3}><Button onClick={() => appendToDisplay('0')} className="zero">0</Button></Col>
+                    <Col xs={3}><Button onClick={clearDisplay}>C</Button></Col>
+                  </Col>
+                  <Col xs={3}>
+                    <Col><Button onClick={calculate} className="equal">=</Button></Col>
+                  </Col>
+                      
+              </Row>
+            </div>
           </div>
         </Col>
       </Row>
