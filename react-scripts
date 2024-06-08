@@ -68,7 +68,7 @@ const Layout = () => {
 
   const handleKeydown = (event) => {
     const { key } = event;
-    if (/\d|[+\-*\/.]/.test(key)) {
+    if (/\d|\+|\*|\/|\./.test(key)) {
       appendToDisplay(key);
     } else if (key === 'Enter') {
       calculate();
@@ -124,3 +124,4 @@ const Layout = () => {
 }
 
 export default Layout;
+
