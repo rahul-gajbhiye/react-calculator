@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
-import { evaluate } from 'mathjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackspace, faDivide, faDotCircle, faMinus, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { faPercentage } from '@fortawesome/free-solid-svg-icons/faPercentage';
+import { faBackspace, faDivide, faMinus, faPlus, faTimes, faPercentage } from '@fortawesome/free-solid-svg-icons';
+import { evaluate } from 'mathjs';
 
 const Layout = () => {
   const [display, setDisplay] = useState('');
 
+  useEffect(() => {
+    const handleKeydown = (event) => {
+      const { key } = event;
+      // eslint-disable-next-line
+      if (/\d|\+|\-|\*|\/|\./.test(key)) {
+        appendToDisplay(key);
+      } else if (key === 'Enter') {
+        calculate();
+      } else if (key === 'Backspace') {
+        backspace();
+      } else if (key === 'Esc') {
+        clearDisplay();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeydown);
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+    };
+  }, [display]);
+
+  // eslint-disable-next-line
   const appendToDisplay = (value) => {
     // Validations
     if (value === 'C') {
@@ -62,31 +83,41 @@ const Layout = () => {
     setDisplay((prev) => prev.slice(0, -1));
   };
 
+  // eslint-disable-next-line
   const calculate = () => {
     try {
-      setDisplay(evaluate(display).toString());
+      const result = evaluate(display);
+      if (isNaN(result) || !isFinite(result)) {
+        setDisplay('Error');
+      } else {
+        setDisplay(result.toString());
+      }
     } catch {
       setDisplay('Error');
     }
   };
 
-  const handleKeydown = (event) => {
-    const { key } = event;
-    if (/\d|\+|\-|\*|\/|\./.test(key)) {
+  // const handleKeydown = (event) => {
+  //   const { key } = event;
+  //   // eslint-disable-next-line
+  //   if (/\d|\+|\-|\*|\/|\./.test(key)) {
      
-      appendToDisplay(key);
-    } else if (key === 'Enter') {
-      calculate();
-    } else if (key === 'Backspace') {
-      backspace();
-    }
-  };
+  //     appendToDisplay(key);
+  //   } else if (key === 'Enter') {
+  //     calculate();
+  //   } else if (key === 'Backspace') {
+  //     backspace();
+  //   } else if (key === 'Esc') {
+  //     clearDisplay();
+  //   }
+  // };
+
   return (
     <Container fluid className="vh-100 d-flex justify-content-center align-items-center">
       <Col xs={12} md={6} xl={4} onKeyDown={handleKeydown} className="text-center border p-4 border-black">
 
             <Row>
-            <Col xs={12}><input type="text" value={display} readOnly className="display text-end w-100 mb-3 border-black" /></Col>
+            <Col xs={12}><input type="text" value={display} readOnly className="display text-end w-100 mb-3 border-black" style={{height: "75px"}}/></Col>
             </Row>
             <Row >
               <Col xs={3} ><Button onClick={backspace} variant="secondary" className="w-100 mb-2 border-black"><FontAwesomeIcon icon={faBackspace} /></Button></Col>
@@ -112,14 +143,14 @@ const Layout = () => {
                   <Col xs={4} ><Button onClick={() => appendToDisplay('1')} variant="light"className="w-100 mb-2 border-black">1</Button></Col>
                   <Col xs={4} ><Button onClick={() => appendToDisplay('2')} variant="light" className="w-100 mb-2 border-black">2</Button></Col>
                   <Col xs={4} ><Button onClick={() => appendToDisplay('3')} variant="light"className="w-100 mb-2 border-black">3</Button></Col>
-                  <Col xs={4} ><Button onClick={() => appendToDisplay('.')} variant="light" className="w-100 mb-2 border-black"><FontAwesomeIcon icon={faDotCircle} /></Button></Col>
+                  <Col xs={4} ><Button onClick={() => appendToDisplay('.')} variant="light" className="w-100 mb-2 border-black">.</Button></Col>
                   <Col xs={4} ><Button onClick={() => appendToDisplay('0')} variant="light" className="w-100 mb-2 border-black">0</Button></Col>
                   <Col xs={4} ><Button onClick={clearDisplay} variant="light" className="w-100 mb-2 border-black">C</Button></Col>
                 </Row>
               </Col>
               <Col xs={3}>
-                <Row className="d-grid gap-2">
-                  <Col><Button onClick={calculate} variant="primary" className="w-100 mb-2 border-black">=</Button></Col>
+                <Row className="d-grid gap-2"  >
+                  <Col><Button onClick={calculate} variant="primary" rows={2} className="w-100 mb-2 border-black" style={{height: "83px"}}>=</Button></Col>
                 </Row>
               </Col>
             </Row>  
