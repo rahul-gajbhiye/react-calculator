@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -10,29 +10,12 @@ import { evaluate } from 'mathjs';
 const Layout = () => {
   const [display, setDisplay] = useState('');
 
-  useEffect(() => {
-    const handleKeydown = (event) => {
-      const { key } = event;
-      // eslint-disable-next-line
-      if (/\d|\+|\-|\*|\/|\./.test(key)) {
-        appendToDisplay(key);
-      } else if (key === 'Enter') {
-        calculate();
-      } else if (key === 'Backspace') {
-        backspace();
-      } else if (key === 'Esc') {
-        clearDisplay();
-      }
-    };
-
-    document.addEventListener('keydown', handleKeydown);
-    return () => {
-      document.removeEventListener('keydown', handleKeydown);
-    };
-  }, [display]);
+  const clearDisplay = useCallback(() => {
+    setDisplay('');
+  }, []);
 
   // eslint-disable-next-line
-  const appendToDisplay = (value) => {
+  const appendToDisplay = useCallback((value) => {
     // Validations
     if (value === 'C') {
       clearDisplay();
@@ -73,18 +56,16 @@ const Layout = () => {
   
     // Update display with the value
     setDisplay(prevDisplay => prevDisplay + value);
-  };
+  }, [clearDisplay, display]);
+ 
   
-  const clearDisplay = () => {
-    setDisplay('');
-  };
 
-  const backspace = () => {
+  const backspace = useCallback(() => {
     setDisplay((prev) => prev.slice(0, -1));
-  };
+  }, []);
 
   // eslint-disable-next-line
-  const calculate = () => {
+  const calculate = useCallback(() => {
     try {
       const result = evaluate(display);
       if (isNaN(result) || !isFinite(result)) {
@@ -95,22 +76,28 @@ const Layout = () => {
     } catch {
       setDisplay('Error');
     }
-  };
+  }, [display]);
 
-  // const handleKeydown = (event) => {
-  //   const { key } = event;
-  //   // eslint-disable-next-line
-  //   if (/\d|\+|\-|\*|\/|\./.test(key)) {
-     
-  //     appendToDisplay(key);
-  //   } else if (key === 'Enter') {
-  //     calculate();
-  //   } else if (key === 'Backspace') {
-  //     backspace();
-  //   } else if (key === 'Esc') {
-  //     clearDisplay();
-  //   }
-  // };
+  const handleKeydown = useCallback((event) => {
+    const { key } = event;
+    // eslint-disable-next-line
+    if (/\d|\+|\-|\*|\/|\./.test(key)) {
+      appendToDisplay(key);
+    } else if (key === 'Enter') {
+      calculate();
+    } else if (key === 'Backspace') {
+      backspace();
+    } else if (key === 'Escape') {
+      clearDisplay();
+    }
+  }, [appendToDisplay, calculate, backspace, clearDisplay]);
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeydown);
+    return () => {
+      document.removeEventListener('keydown', handleKeydown);
+    };
+  }, [handleKeydown]);
 
   return (
     <Container fluid className="vh-100 d-flex justify-content-center align-items-center">
