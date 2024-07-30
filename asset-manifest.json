@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/rahul-gajbhiye/react-calculator.git/static/css/main.36ffff30.css",
+    "main.js": "/rahul-gajbhiye/react-calculator.git/static/js/main.3ec66414.js",
+    "static/js/453.1d122d62.chunk.js": "/rahul-gajbhiye/react-calculator.git/static/js/453.1d122d62.chunk.js",
+    "index.html": "/rahul-gajbhiye/react-calculator.git/index.html",
+    "main.36ffff30.css.map": "/rahul-gajbhiye/react-calculator.git/static/css/main.36ffff30.css.map",
+    "main.3ec66414.js.map": "/rahul-gajbhiye/react-calculator.git/static/js/main.3ec66414.js.map",
+    "453.1d122d62.chunk.js.map": "/rahul-gajbhiye/react-calculator.git/static/js/453.1d122d62.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.36ffff30.css",
+    "static/js/main.3ec66414.js"
+  ]
+}
